@@ -1,16 +1,16 @@
+# 定义构建系统
 [build-system]
 requires = ["hatchling", "hatch-vcs"]
 build-backend = "hatchling.build"
 
+# 定义项目信息
 [project]
 name = "khoj"
 description = "Your Second Brain"
 readme = "README.md"
 license = "AGPL-3.0-or-later"
 requires-python = ">=3.10"
-authors = [
-    { name = "Debanjum Singh Solanky, Saba Imran" },
-]
+authors = [{ name = "Debanjum Singh Solanky, Saba Imran" }]
 keywords = [
     "search",
     "semantic-search",
@@ -35,71 +35,81 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Human Machine Interfaces",
     "Intended Audience :: Information Technology",
 ]
+# 依赖项列表
+# 依赖项列表
 dependencies = [
+    # beautifulsoup4库，版本为4.12.3
     "beautifulsoup4 ~= 4.12.3",
-    "dateparser >= 1.1.1",
-    "defusedxml == 0.7.1",
-    "fastapi >= 0.110.0",
-    "python-multipart >= 0.0.7",
+    "dateparser >= 1.1.1",       # 日期解析库
+    "defusedxml == 0.7.1",       # 安全的XML解析库
+    "fastapi >= 0.110.0",        # 快速API框架
+    "python-multipart >= 0.0.7", # 处理多部分编码的库
+    # 尤其是当表单中包含文件上传时。在这种格式中，表单的数据被分割成多个部分，每个部分都可以有一个名字（通过Content-Disposition头部指定），并且可以有不同的内容类型。
+    #在multipart/form-data请求中，数据的第一部分通常是一个JSON格式的消息，用于描述后续的图片文件上传。这个JSON消息被设置为application/json内容类型，并且通过form-data头部指定它的名字。
+    #后续的每个图片文件都是一个单独的部分，它们的名字和文件类型也通过Content-Disposition和Content-Type头部指定
+    # Jinja2是一个现代的、设计简洁的模板引擎，用于Python
     "jinja2 == 3.1.4",
-    "openai >= 1.0.0",
-    "tiktoken >= 0.3.2",
-    "tenacity >= 8.2.2",
-    "magika ~= 0.5.1",
-    "pillow ~= 10.0.0",
-    "pydantic[email] >= 2.0.0",
-    "pyyaml ~= 6.0",
-    "rich >= 13.3.1",
-    "schedule == 1.1.0",
-    "sentence-transformers == 3.0.1",
-    "einops == 0.8.0",
-    "transformers >= 4.28.0",
-    "torch == 2.2.2",
-    "uvicorn == 0.30.6",
-    "aiohttp ~= 3.9.0",
-    "langchain == 0.2.5",
-    "langchain-community == 0.2.5",
-    "requests >= 2.26.0",
-    "tenacity == 8.3.0",
-    "anyio == 3.7.1",
-    "pymupdf == 1.24.11",
-    "django == 5.0.10",
-    "django-unfold == 0.42.0",
-    "authlib == 1.2.1",
-    "llama-cpp-python == 0.2.88",
-    "itsdangerous == 2.1.2",
-    "httpx == 0.25.0",
-    "pgvector == 0.2.4",
-    "psycopg2-binary == 2.9.9",
-    "lxml == 4.9.3",
-    "tzdata == 2023.3",
-    "rapidocr-onnxruntime == 1.3.24",
-    "openai-whisper >= 20231117",
-    "django-phonenumber-field == 7.3.0",
-    "phonenumbers == 8.13.27",
-    "markdownify ~= 0.11.6",
-    "markdown-it-py ~= 3.0.0",
-    "websockets == 12.0",
-    "psutil >= 5.8.0",
-    "huggingface-hub >= 0.22.2",
-    "apscheduler ~= 3.10.0",
-    "pytz ~= 2024.1",
-    "cron-descriptor == 1.4.3",
-    "django_apscheduler == 0.6.2",
-    "anthropic == 0.26.1",
-    "docx2txt == 0.8",
-    "google-generativeai == 0.8.3",
-    "pyjson5 == 1.6.7",
+    "openai >= 1.0.0",                   # OpenAI API库
+    "tiktoken >= 0.3.2",                 # TikTok令牌库
+    "tenacity >= 8.2.2",                 # 重试库
+    "magika ~= 0.5.1",                   # 魔法库
+    "pillow ~= 10.0.0",                  # 图像处理库
+    "pydantic[email] >= 2.0.0",          # 数据验证库
+    "pyyaml ~= 6.0",                     # YAML解析库
+    "rich >= 13.3.1",                    # 命令行界面美化库
+    "schedule == 1.1.0",                 # 定时任务库
+    "sentence-transformers == 3.0.1",    # 句子转换库
+    "einops == 0.8.0",                   # 操作张量的库
+    "transformers >= 4.28.0",            # 自然语言处理库
+    "torch == 2.2.2",                    # 机器学习库
+    "uvicorn == 0.30.6",                 # ASGI服务器
+    "aiohttp ~= 3.9.0",                  # 异步HTTP客户端/服务器库
+    "langchain == 0.2.5",                # 语言链库
+    "langchain-community == 0.2.5",      # 社区版语言链库
+    "requests >= 2.26.0",                # HTTP库
+    "tenacity == 8.3.0",                 # 重试库
+    "anyio == 3.7.1",                    # 异步IO库
+    "pymupdf == 1.24.11",                # PDF处理库
+    "django == 5.0.10",                  # Django框架
+    "django-unfold == 0.42.0",           # Django扩展库
+    "authlib == 1.2.1",                  # 认证库
+    "llama-cpp-python == 0.2.88",        # LLaMA模型库
+    "itsdangerous == 2.1.2",             # 安全令牌库
+    "httpx == 0.25.0",                   # HTTP客户端库
+    "pgvector == 0.2.4",                 # PostgreSQL向量库
+    "psycopg2-binary == 2.9.9",          # PostgreSQL数据库驱动
+    "lxml == 4.9.3",                     # XML处理库
+    "tzdata == 2023.3",                  # 时区数据
+    "rapidocr-onnxruntime == 1.3.24",    # OCR库
+    "openai-whisper >= 20231117",        # OpenAI语音识别库
+    "django-phonenumber-field == 7.3.0", # Django电话号码字段库
+    "phonenumbers == 8.13.27",           # 电话号码处理库
+    "markdownify ~= 0.11.6",             # Markdown转换库
+    "markdown-it-py ~= 3.0.0",           # Markdown解析库
+    "websockets == 12.0",                # WebSocket库
+    "psutil >= 5.8.0",                   # 系统监控库
+    "huggingface-hub >= 0.22.2",         # Hugging Face Hub库
+    "apscheduler ~= 3.10.0",             # 调度器库
+    "pytz ~= 2024.1",                    # 时区处理库
+    "cron-descriptor == 1.4.3",          # Cron表达式解析库
+    "django_apscheduler == 0.6.2",       # Django调度器库
+    "anthropic == 0.26.1",               # Anthropic API库
+    "docx2txt == 0.8",                   # Word文档转换库
+    "google-generativeai == 0.8.3",      # Google生成式AI库
+    "pyjson5 == 1.6.7",                  # JSON5解析库
 ]
 dynamic = ["version"]
 
+# 定义项目URL
 [project.urls]
 Homepage = "https://khoj.dev"
 Documentation = "https://docs.khoj.dev"
 Code = "https://github.com/khoj-ai/khoj"
+# 定义项目脚本
 
 [project.scripts]
 khoj = "khoj.main:run"
+# 定义项目可选依赖
 
 [project.optional-dependencies]
 prod = [
@@ -125,16 +135,20 @@ dev = [
     "datasets",
     "pandas",
 ]
+# 定义hatch版本
 
 [tool.hatch.version]
 source = "vcs"
-raw-options.local_scheme = "no-local-version"  # PEP440 compliant version for PyPi
+raw-options.local_scheme = "no-local-version" # PEP440 compliant version for PyPi
+# 定义sdist构建目标
 
 [tool.hatch.build.targets.sdist]
 include = ["src/khoj"]
+# 定义wheel构建目标
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/khoj"]
+# 定义mypy工具
 
 [tool.mypy]
 files = "src/khoj"
@@ -145,15 +159,16 @@ ignore_missing_imports = true
 non_interactive = true
 show_error_codes = true
 warn_unused_ignores = false
+# 定义black工具
 
 [tool.black]
 line-length = 120
+# 定义isort工具
 
 [tool.isort]
 profile = "black"
+# 定义pytest工具
 
 [tool.pytest.ini_options]
 addopts = "--strict-markers"
-markers = [
-    "chatquality: Evaluate chatbot capabilities and quality",
-]
+markers = ["chatquality: Evaluate chatbot capabilities and quality"]

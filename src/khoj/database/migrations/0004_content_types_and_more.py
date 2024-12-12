@@ -135,13 +135,22 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name="Embeddings",
             fields=[
-                ("id", models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID")),
-                ("created_at", models.DateTimeField(auto_now_add=True)),
-                ("updated_at", models.DateTimeField(auto_now=True)),
-                ("embeddings", pgvector.django.VectorField(dimensions=384)),
-                ("raw", models.TextField()),
-                ("compiled", models.TextField()),
-                ("heading", models.CharField(blank=True, default=None, max_length=1000, null=True)),
+                (
+                    "id",
+                    models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name="ID"),
+                ),  # 创建一个名为Embeddings的模型，包含一个自增的主键id
+                ("created_at", models.DateTimeField(auto_now_add=True)),  # 创建时间
+                ("updated_at", models.DateTimeField(auto_now=True)),  # 更新时间
+                (
+                    "embeddings",
+                    pgvector.django.VectorField(dimensions=384),
+                ),  # 创建一个名为embeddings的字段，类型为pgvector.django.VectorField，维度为384
+                ("raw", models.TextField()),  # 创建一个名为raw的字段，类型为TextField
+                ("compiled", models.TextField()),  # 创建一个名为compiled的字段，类型为TextField
+                (
+                    "heading",
+                    models.CharField(blank=True, default=None, max_length=1000, null=True),
+                ),  # 创建一个名为heading的字段，类型为CharField，最大长度为1000，可以为空
                 (
                     "file_type",
                     models.CharField(
@@ -158,11 +167,23 @@ class Migration(migrations.Migration):
                         default="plaintext",
                         max_length=30,
                     ),
-                ),
-                ("file_path", models.CharField(blank=True, default=None, max_length=400, null=True)),
-                ("file_name", models.CharField(blank=True, default=None, max_length=400, null=True)),
-                ("url", models.URLField(blank=True, default=None, max_length=400, null=True)),
-                ("hashed_value", models.CharField(max_length=100)),
+                ),  # 创建一个名为file_type的字段，类型为CharField，最大长度为30，包含多个选项，默认为plaintext
+                (
+                    "file_path",
+                    models.CharField(blank=True, default=None, max_length=400, null=True),
+                ),  # 创建一个名为file_path的字段，类型为CharField，最大长度为400，可以为空
+                (
+                    "file_name",
+                    models.CharField(blank=True, default=None, max_length=400, null=True),
+                ),  # 创建一个名为file_name的字段，类型为CharField，最大长度为400，可以为空
+                (
+                    "url",
+                    models.URLField(blank=True, default=None, max_length=400, null=True),
+                ),  # 创建一个名为url的字段，类型为URLField，最大长度为400，可以为空
+                (
+                    "hashed_value",
+                    models.CharField(max_length=100),
+                ),  # 创建一个名为hashed_value的字段，类型为CharField，最大长度为100
                 (
                     "user",
                     models.ForeignKey(
@@ -172,7 +193,7 @@ class Migration(migrations.Migration):
                         on_delete=django.db.models.deletion.CASCADE,
                         to=settings.AUTH_USER_MODEL,
                     ),
-                ),
+                ),  # 创建一个名为user的字段，类型为ForeignKey，关联到settings.AUTH_USER_MODEL，可以为空
             ],
             options={
                 "abstract": False,

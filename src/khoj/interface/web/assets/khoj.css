@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@100..900&family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 [data-theme="light"],
+// 选择根元素，并且data-theme属性不等于dark
 :root:not([data-theme="dark"]) {
     --primary: #f9f5de;
     --primary-hover: #fee285;

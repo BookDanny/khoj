@@ -13,40 +13,67 @@ from django_apscheduler.jobstores import DjangoJobStore
 from django_apscheduler.models import DjangoJob, DjangoJobExecution
 from unfold import admin as unfold_admin
 
+# 从khoj.database.models模块中导入以下类
 from khoj.database.models import (
+    # 代理类
     Agent,
+    # AI模型API类
     AiModelApi,
+    # 聊天模型选项类
     ChatModelOptions,
+    # 客户端应用程序类
     ClientApplication,
+    # 会话类
+    # 条目类
     Conversation,
+    # 导入Entry类
     Entry,
+    # 导入GithubConfig类
     GithubConfig,
+    # 导入KhojUser类
     KhojUser,
+    # Notion配置
     NotionConfig,
+    # 进程锁
     ProcessLock,
+    # 反射性问题
     ReflectiveQuestion,
+    # 搜索模型配置
     SearchModelConfig,
+    # 服务器聊天设置
     ServerChatSettings,
+    # 语音到文本模型选项
     SpeechToTextModelOptions,
+    # 订阅
     Subscription,
+    # 文本到图像模型配置
     TextToImageModelConfig,
+    # 用户对话配置
     UserConversationConfig,
+    # 用户请求
     UserRequests,
+    # 用户语音模型配置
     UserVoiceModelConfig,
+    # 声音模型选项
     VoiceModelOption,
+    # 网络爬虫
     WebScraper,
 )
 from khoj.utils.helpers import ImageIntentType
 
 
 class KhojDjangoJobAdmin(DjangoJobAdmin, unfold_admin.ModelAdmin):
+    # 定义显示在列表中的字段
     list_display = (
         "id",
         "next_run_time",
         "job_info",
     )
+    # 定义搜索字段
     search_fields = ("id", "next_run_time")
+    # 定义排序字段
     ordering = ("-next_run_time",)
+    # 创建一个DjangoJobStore对象
     job_store = DjangoJobStore()
 
     def job_info(self, obj):
@@ -82,10 +109,12 @@ class UserAdmin(BaseUserAdmin, unfold_admin.ModelAdmin):
 
 
 class KhojUserAdmin(UserAdmin, unfold_admin.ModelAdmin):
+    # 定义一个过滤器，用于筛选出在指定日期之后加入的用户
     class DateJoinedAfterFilter(admin.SimpleListFilter):
         title = "Joined after"
         parameter_name = "joined_after"
 
+        # 返回可供选择的日期范围
         def lookups(self, request, model_admin):
             return (
                 ("1d", "Last 24 hours"),
@@ -94,6 +123,7 @@ class KhojUserAdmin(UserAdmin, unfold_admin.ModelAdmin):
                 ("90d", "Last 90 days"),
             )
 
+        # 根据选择的日期范围，返回筛选后的用户列表
         def queryset(self, request, queryset):
             if self.value():
                 days = int(self.value().rstrip("d"))
@@ -153,17 +183,28 @@ class KhojUserAdmin(UserAdmin, unfold_admin.ModelAdmin):
     get_email_login_url.short_description = "Get email login URL"  # type: ignore
 
 
+# 注销Group模型
 admin.site.unregister(Group)
+# 注册KhojUser模型，并使用KhojUserAdmin类
 admin.site.register(KhojUser, KhojUserAdmin)
 
+# 注册ProcessLock模型，并使用unfold_admin.ModelAdmin类
 admin.site.register(ProcessLock, unfold_admin.ModelAdmin)
+# 注册SpeechToTextModelOptions模型，并使用unfold_admin.ModelAdmin类
 admin.site.register(SpeechToTextModelOptions, unfold_admin.ModelAdmin)
+# 注册ReflectiveQuestion模型到admin站点，使用unfold_admin.ModelAdmin作为管理类
 admin.site.register(ReflectiveQuestion, unfold_admin.ModelAdmin)
+# 注册ClientApplication模型到admin站点，使用unfold_admin.ModelAdmin作为管理类
 admin.site.register(ClientApplication, unfold_admin.ModelAdmin)
+# 注册GithubConfig模型到admin站点，使用unfold_admin.ModelAdmin作为管理类
 admin.site.register(GithubConfig, unfold_admin.ModelAdmin)
+# 注册NotionConfig模型到admin站点，使用unfold_admin.ModelAdmin作为管理类
 admin.site.register(NotionConfig, unfold_admin.ModelAdmin)
+# 注册UserVoiceModelConfig模型到admin站点，使用unfold_admin.ModelAdmin作为管理类
 admin.site.register(UserVoiceModelConfig, unfold_admin.ModelAdmin)
+# 注册VoiceModelOption模型到admin站点，使用unfold_admin.ModelAdmin作为管理类
 admin.site.register(VoiceModelOption, unfold_admin.ModelAdmin)
+# 注册UserRequests模型到admin站点，使用unfold_admin.ModelAdmin作为管理类
 admin.site.register(UserRequests, unfold_admin.ModelAdmin)
 
 
@@ -278,6 +319,7 @@ class WebScraperAdmin(unfold_admin.ModelAdmin):
     ordering = ("priority",)
 
 
+# 使用admin模块注册Conversation模型
 @admin.register(Conversation)
 class ConversationAdmin(unfold_admin.ModelAdmin):
     list_display = (
@@ -337,17 +379,17 @@ class ConversationAdmin(unfold_admin.ModelAdmin):
             return_log = dict()
             chat_log = conversation.conversation_log.get("chat", [])
             for idx, log in enumerate(chat_log):
-                updated_log = {}
-                for key in fields_to_keep:
-                    updated_log[key] = log[key]
+                updated_log = {key: log[key] for key in fields_to_keep}
+                # 如果日志中的by字段为khoj，并且intent字段存在，并且intent字段中的type字段存在，并且type字段的值在TEXT_TO_IMAGE或TEXT_TO_IMAGE_V3中
                 if (
                     log["by"] == "khoj"
                     and log["intent"]
                     and log["intent"]["type"]
-                    and (
-                        log["intent"]["type"] == ImageIntentType.TEXT_TO_IMAGE.value
-                        or log["intent"]["type"] == ImageIntentType.TEXT_TO_IMAGE_V3.value
-                    )
+                    and log["intent"]["type"]
+                    in [
+                        ImageIntentType.TEXT_TO_IMAGE.value,
+                        ImageIntentType.TEXT_TO_IMAGE_V3.value,
+                    ]
                 ):
                     updated_log["message"] = "inline image redacted for space"
                 chat_log[idx] = updated_log
@@ -367,8 +409,11 @@ class ConversationAdmin(unfold_admin.ModelAdmin):
 
     export_selected_minimal_objects.short_description = "Export selected conversations (minimal)"  # type: ignore
 
+    # 获取用户请求的动作
     def get_actions(self, request):
+        # 调用父类的get_actions方法，获取动作列表
         actions = super().get_actions(request)
+        # 如果用户不是超级用户
         if not request.user.is_superuser:
             if "export_selected_objects" in actions:
                 del actions["export_selected_objects"]
@@ -379,13 +424,16 @@ class ConversationAdmin(unfold_admin.ModelAdmin):
 
 @admin.register(UserConversationConfig)
 class UserConversationConfigAdmin(unfold_admin.ModelAdmin):
+    # 定义UserConversationConfigAdmin类，继承自unfold_admin.ModelAdmin
     list_display = (
         "id",
         "get_user_email",
         "get_chat_model",
         "get_subscription_type",
     )
+    # 定义列表显示的字段
     search_fields = ("id", "user__email", "setting__chat_model", "user__subscription__type")
+    # 定义搜索字段
     ordering = ("-updated_at",)
 
     def get_user_email(self, obj):

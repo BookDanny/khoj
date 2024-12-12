@@ -29,7 +29,9 @@
             <div class="filler"></div>
 
             <!--Add Header Logo and Nav Pane-->
+            <!-- 导入utils.html文件，并将其命名为utils 需要注意的是，{% import %}标签只能导入模板文件，不能导入Python模块。如果需要导入Python模块，可以使用{% load %}标签。-->
             {% import 'utils.html' as utils %}
+            <!-- 调用utils.html文件中的heading_pane函数，并传入user_photo、username、is_active、has_documents参数 -->
             {{ utils.heading_pane(user_photo, username, is_active, has_documents) }}
 
             <div class="filler"></div>
@@ -82,15 +84,17 @@
 
         div.section-manage-files,
         div.api-settings {
-            display: grid;
-            grid-template-columns: 1fr;
-            justify-items: start;
-            gap: 8px;
+
+            /* 设置div.api-settings的样式 */
+            display: grid; /* 设置div.api-settings的布局为网格布局 */
+            grid-template-columns: 1fr; /* 设置div.api-settings的网格列为1fr */
+            justify-items: start; /* 设置div.api-settings的网格项对齐方式为起始位置 */
+            gap: 8px; /* 设置div.api-settings的网格项之间的间距为8px */
             padding: 24px 24px;
-            background: var(--background-color);
-            border: 1px solid rgb(229, 229, 229);
-            border-radius: 4px;
-            box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.1),0px 1px 2px -1px rgba(0,0,0,0.8);
+            background: var(--background-color); /* 设置div.api-settings的背景颜色为--background-color变量 */
+            border: 1px solid rgb(229, 229, 229); /* 设置div.api-settings的边框为1px实线 */
+            border-radius: 4px; /* 设置div.api-settings的边框圆角为4px */
+            box-shadow: 0px 1px 3px 0px rgba(0,0,0,0.1),0px 1px 2px -1px rgba(0,0,0,0.8); /* 设置div.api-settings的阴影 */
         }
 
         div.section-manage-files {
@@ -124,6 +128,7 @@
         }
         .section-cards {
             display: grid;
+/* 设置网格布局的列数为2，每列宽度为1fr */
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
             justify-items: start;

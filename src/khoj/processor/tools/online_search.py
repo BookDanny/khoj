@@ -38,13 +38,14 @@ JINA_API_KEY = os.getenv("JINA_API_KEY")
 
 FIRECRAWL_USE_LLM_EXTRACT = is_env_var_true("FIRECRAWL_USE_LLM_EXTRACT")
 
+# 定义OLOSTEP_QUERY_PARAMS字典，用于存储OLOSTEP API的查询参数
 OLOSTEP_QUERY_PARAMS = {
-    "timeout": 35,  # seconds
-    "waitBeforeScraping": 1,  # seconds
+    "timeout": 35,  # seconds，超时时间为35秒
+    "waitBeforeScraping": 1,  # seconds，在抓取之前等待1秒
     "saveHtml": "False",
-    "saveMarkdown": "True",
-    "removeCSSselectors": "default",
-    "htmlTransformer": "none",
+    "saveMarkdown": "True",  # 是否保存Markdown，默认为True
+    "removeCSSselectors": "default",  # 是否移除CSS选择器，默认为default
+    "htmlTransformer": "none",  # HTML转换器，默认为none
     "removeImages": "True",
     "fastLane": "True",
     # Similar to Stripe's API, the expand parameters avoid the need to make a second API call

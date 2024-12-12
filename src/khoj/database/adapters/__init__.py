@@ -298,6 +298,8 @@ async def create_user_by_google_token(token: dict) -> KhojUser:
         user=user,
     )
 
+    # 获取用户订阅信息
+    # Subscription是一个Django模型，objects是Django的模型管理器，用于执行数据库操作。
     user_subscription = await Subscription.objects.filter(user=user).afirst()
     if not user_subscription:
         await Subscription.objects.acreate(user=user, type=Subscription.Type.STANDARD)

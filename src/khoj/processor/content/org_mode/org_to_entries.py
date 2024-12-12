@@ -21,8 +21,11 @@ class OrgToEntries(TextToEntries):
 
     # Define Functions
     def process(self, files: dict[str, str], user: KhojUser, regenerate: bool = False) -> Tuple[int, int]:
+        # 获取需要删除的文件名集合
         deletion_file_names = set([file for file in files if files[file] == ""])
+        # 获取需要处理的文件名集合
         files_to_process = set(files) - deletion_file_names
+        # 获取需要处理的文件字典
         files = {file: files[file] for file in files_to_process}
 
         # Extract Entries from specified Org files

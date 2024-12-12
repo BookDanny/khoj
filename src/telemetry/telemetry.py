@@ -68,9 +68,13 @@ def v1_telemetry(telemetry_data: List[Dict[str, str]]):
 
 if __name__ == "__main__":
     # Setup Argument Parser
+    # 创建一个ArgumentParser对象，用于解析命令行参数
     parser = argparse.ArgumentParser(description="Start Khoj Telemetry Server")
+    # 添加一个命令行参数，用于指定telemetry服务器的I.P
     parser.add_argument("--host", default="127.0.0.1", type=str, help="I.P of telemetry server")
+    # 添加一个命令行参数，用于指定telemetry服务器的端口
     parser.add_argument("--port", "-p", default=80, type=int, help="Port of telemetry server")
+    # 解析命令行参数
     args = parser.parse_args()
 
     # Start Application Server

@@ -32,7 +32,7 @@
                     <input type="text" id="repo-branch-{{loop.index}}" name="repo_branch" value="{{ repo.branch }}">
                     <button type="button"
                             class="remove-repo-button"
-                            onclick="remove_repo({{loop.index}})"
+                            onclick="remove_repo('{{loop.index}}')"
                             id="remove-repo-button-{{loop.index}}">Remove Repository</button>
                 </div>
                 {% endfor %}
@@ -62,60 +62,70 @@
     }
 </style>
 <script>
-    const add_repo_button = document.getElementById("add-repository-button");
-    add_repo_button.addEventListener("click", function(event) {
-        event.preventDefault();
-        var repo = document.createElement("div");
-        repo.classList.add("card");
-        repo.classList.add("repo");
-        const id = Date.now();
-        repo.id = "repo-card-" + id;
+ // Get the add repository button element
+const add_repo_button = document.getElementById("add-repository-button");
 
-        // Create repo owner, name, branch elements
-        let repoOwnerLabel = document.createElement("label");
-        repoOwnerLabel.textContent = "Repository Owner";
-        repoOwnerLabel.for = "repo-owner";
+// Add click event listener to the add repository button
+add_repo_button.addEventListener("click", function(event) {
+    // Prevent the default action of the event
+    event.preventDefault();
 
-        let repoOwner = document.createElement("input");
-        repoOwner.type = "text";
-        repoOwner.id = "repo-owner-" + id;
-        repoOwner.name = "repo_owner";
+    // Create a new repository card element
+    var repo = document.createElement("div");
+    repo.classList.add("card");
+    repo.classList.add("repo");
 
-        let repoNameLabel = document.createElement("label");
-        repoNameLabel.textContent = "Repository Name";
-        repoNameLabel.for = "repo-name";
+    // Generate a unique ID for the repository card using the current timestamp
+    const id = Date.now();
+    repo.id = "repo-card-" + id;
 
-        let repoName = document.createElement("input");
-        repoName.type = "text";
-        repoName.id = "repo-name-" + id;
-        repoName.name = "repo_name";
+    // Create repo owner, name, branch elements
+    let repoOwnerLabel = document.createElement("label");
+    repoOwnerLabel.textContent = "Repository Owner";
+    repoOwnerLabel.for = "repo-owner";
 
-        let repoBranchLabel = document.createElement("label");
-        repoBranchLabel.textContent = "Repository Branch";
-        repoBranchLabel.for = "repo-branch";
+    let repoOwner = document.createElement("input");
+    repoOwner.type = "text";
+    repoOwner.id = "repo-owner-" + id;
+    repoOwner.name = "repo_owner";
 
-        let repoBranch = document.createElement("input");
-        repoBranch.type = "text";
-        repoBranch.id = "repo-branch-" + id;
-        repoBranch.name = "repo_branch";
+    let repoNameLabel = document.createElement("label");
+    repoNameLabel.textContent = "Repository Name";
+    repoNameLabel.for = "repo-name";
 
-        let removeRepoButton = document.createElement("button");
-        removeRepoButton.type = "button";
-        removeRepoButton.classList.add("remove-repo-button");
-        removeRepoButton.onclick = function() { remove_repo(id); };
-        removeRepoButton.id = "remove-repo-button-" + id;
-        removeRepoButton.textContent = "Remove Repository";
+    let repoName = document.createElement("input");
+    repoName.type = "text";
+    repoName.id = "repo-name-" + id;
+    repoName.name = "repo_name";
 
-        // Append elements to repo card
-        repo.append(
-            repoOwnerLabel, repoOwner,
-            repoNameLabel, repoName,
-            repoBranchLabel, repoBranch,
-            removeRepoButton
-        );
+    let repoBranchLabel = document.createElement("label");
+    repoBranchLabel.textContent = "Repository Branch";
+    repoBranchLabel.for = "repo-branch";
 
-        document.getElementById("repositories").appendChild(repo);
-    })
+    let repoBranch = document.createElement("input");
+    repoBranch.type = "text";
+    repoBranch.id = "repo-branch-" + id;
+    repoBranch.name = "repo_branch";
+
+    // Create and add a remove repository button
+    let removeRepoButton = document.createElement("button");
+    removeRepoButton.type = "button";
+    removeRepoButton.classList.add("remove-repo-button");
+    removeRepoButton.onclick = function() { remove_repo(id); };
+    removeRepoButton.id = "remove-repo-button-" + id;
+    removeRepoButton.textContent = "Remove Repository";
+
+    // Append elements to repo card
+    repo.append(
+        repoOwnerLabel, repoOwner,
+        repoNameLabel, repoName,
+        repoBranchLabel, repoBranch,
+        removeRepoButton
+    );
+
+    // Append the repository card to the repositories container
+    document.getElementById("repositories").appendChild(repo);
+})
 
     function remove_repo(index) {
         document.getElementById("repo-card-" + index).remove();
